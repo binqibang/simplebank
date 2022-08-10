@@ -44,7 +44,8 @@ func RandomOwner() string {
 	}
 	k := len(names)
 	idx := rand.Intn(k)
-	return names[idx]
+	name := strings.Replace(names[idx], "\n", "", -1)
+	return name
 }
 
 // RandomCurrency generates a random currency code

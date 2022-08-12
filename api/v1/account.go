@@ -61,7 +61,7 @@ func (server *Server) ListAllAccounts(c *gin.Context) {
 
 type createAccountRequest struct {
 	Owner    string `json:"owner" binding:"required"`
-	Currency string `json:"currency" binding:"required,oneof=USD EUR JPY CNY GBP"`
+	Currency string `json:"currency" binding:"required,currency"`
 }
 
 // CreateAccount create a new account with initial balance 0.

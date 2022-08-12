@@ -20,6 +20,9 @@ var (
 	InvalidRequestType  = NewResultCode(4002, "请求格式不合法")
 	InvalidRequestBody  = NewResultCode(4003, "请求数据不合法")
 	InvalidUrlDomain    = NewResultCode(4004, "无效URL")
+	InvalidCurrency     = NewResultCode(4005, "转账货币不一致")
+	InsufficientBalance = NewResultCode(4006, "账户余额不足")
 
-	DatabaseNotFound = NewResultCode(4040, "数据库无此资源")
+	NotFound        = NewResultCode(4040, "无对应资源")
+	AccountNotFound = NewResultCode(4041, "无此账户")
 )

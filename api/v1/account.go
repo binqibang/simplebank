@@ -20,7 +20,7 @@ func (server *Server) GetAccount(c *gin.Context) {
 	account, err := server.store.GetAccount(c, id)
 	if err != nil {
 		if err == sql.ErrNoRows {
-			c.JSON(http.StatusNotFound, ErrorWithCode(common.DatabaseNotFound))
+			c.JSON(http.StatusNotFound, ErrorWithCode(common.AccountNotFound))
 			return
 		}
 		c.JSON(http.StatusInternalServerError, Error(err))
@@ -53,7 +53,7 @@ func (server *Server) ListAllAccounts(c *gin.Context) {
 		return
 	}
 	if len(accounts) == 0 {
-		c.JSON(http.StatusNotFound, ErrorWithCode(common.DatabaseNotFound))
+		c.JSON(http.StatusNotFound, ErrorWithCode(common.AccountNotFound))
 		return
 	}
 	c.JSON(http.StatusOK, Success(accounts))
@@ -79,7 +79,7 @@ func (server *Server) CreateAccount(c *gin.Context) {
 	account, err := server.store.CreateAccount(c, arg)
 	if err != nil {
 		if err == sql.ErrNoRows {
-			c.JSON(http.StatusNotFound, ErrorWithCode(common.DatabaseNotFound))
+			c.JSON(http.StatusNotFound, Error(err))
 			return
 		}
 		c.JSON(http.StatusInternalServerError, Error(err))
@@ -113,7 +113,7 @@ func (server *Server) ListAccounts(c *gin.Context) {
 		return
 	}
 	if len(accounts) == 0 {
-		c.JSON(http.StatusNotFound, ErrorWithCode(common.DatabaseNotFound))
+		c.JSON(http.StatusNotFound, ErrorWithCode(common.AccountNotFound))
 		return
 	}
 	c.JSON(http.StatusOK, Success(accounts))

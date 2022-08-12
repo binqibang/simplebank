@@ -44,9 +44,9 @@ func (s *Store) execTx(ctx context.Context, fn func(*Queries) error) error {
 
 // TransferTxParams contains the input parameters of the transfer transaction.
 type TransferTxParams struct {
-	FromAccountID sql.NullInt64 `json:"from_account_id"`
-	ToAccountID   sql.NullInt64 `json:"to_account_id"`
-	Amount        int64         `json:"amount"`
+	FromAccountID int64 `json:"from_account_id"`
+	ToAccountID   int64 `json:"to_account_id"`
+	Amount        int64 `json:"amount"`
 }
 
 // TransferTxResult is the result of the transfer transaction.
@@ -98,12 +98,12 @@ func (s *Store) TransferTx(ctx context.Context, arg TransferTxParams) (TransferT
 		// Change balance.
 		// Make sure we first update the smaller id account,
 		// to avoid the deadlock.
-		if arg.FromAccountID.Int64 < arg.ToAccountID.Int64 {
-			result.FromAccount, result.ToAccount, err = addMoney(ctx, q, arg.FromAccountID.Int64,
-				-arg.Amount, arg.ToAccountID.Int64, arg.Amount)
+		if arg.FromAccountID < arg.ToAccountID {
+			result.FromAccount, result.ToAccount, err = addMoney(ctx, q, arg.FromAccountID,
+				-arg.Amount, arg.ToAccountID, arg.Amount)
 		} else {
-			result.ToAccount, result.FromAccount, err = addMoney(ctx, q, arg.ToAccountID.Int64,
-				arg.Amount, arg.FromAccountID.Int64, -arg.Amount)
+			result.ToAccount, result.FromAccount, err = addMoney(ctx, q, arg.ToAccountID,
+				arg.Amount, arg.FromAccountID, -arg.Amount)
 		}
 
 		return err

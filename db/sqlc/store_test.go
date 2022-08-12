@@ -2,7 +2,6 @@ package db
 
 import (
 	"context"
-	"database/sql"
 	"fmt"
 	"github.com/stretchr/testify/require"
 	"testing"
@@ -28,8 +27,8 @@ func TestTransferTx(t *testing.T) {
 	for i := 0; i < n; i++ {
 		go func() {
 			res, err := store.TransferTx(context.Background(), TransferTxParams{
-				FromAccountID: sql.NullInt64{Int64: account1.ID, Valid: true},
-				ToAccountID:   sql.NullInt64{Int64: account2.ID, Valid: true},
+				FromAccountID: account1.ID,
+				ToAccountID:   account2.ID,
 				Amount:        amount,
 			})
 			// Pass to channel.
@@ -50,8 +49,8 @@ func TestTransferTx(t *testing.T) {
 		// check transfer
 		transfer := res.Transfer
 		require.NotEmpty(t, transfer)
-		require.Equal(t, account1.ID, transfer.FromAccountID.Int64)
-		require.Equal(t, account2.ID, transfer.ToAccountID.Int64)
+		require.Equal(t, account1.ID, transfer.FromAccountID)
+		require.Equal(t, account2.ID, transfer.ToAccountID)
 		require.Equal(t, amount, transfer.Amount)
 		require.NotZero(t, transfer.ID)
 		require.NotZero(t, transfer.CreatedAt)
@@ -63,7 +62,7 @@ func TestTransferTx(t *testing.T) {
 		// check entries
 		fromEntry := res.FromEntry
 		require.NotEmpty(t, fromEntry)
-		require.Equal(t, account1.ID, fromEntry.AccountID.Int64)
+		require.Equal(t, account1.ID, fromEntry.AccountID)
 		require.Equal(t, -amount, fromEntry.Amount)
 		require.NotZero(t, fromEntry.ID)
 		require.NotZero(t, fromEntry.CreatedAt)
@@ -74,7 +73,7 @@ func TestTransferTx(t *testing.T) {
 
 		toEntry := res.ToEntry
 		require.NotEmpty(t, toEntry)
-		require.Equal(t, account2.ID, toEntry.AccountID.Int64)
+		require.Equal(t, account2.ID, toEntry.AccountID)
 		require.Equal(t, amount, toEntry.Amount)
 		require.NotZero(t, toEntry.ID)
 		require.NotZero(t, toEntry.CreatedAt)

@@ -6,12 +6,14 @@ packages:
       queries: "./db/query/"     # sql 查询文件
       engine: "postgresql"       # 数据库
       emit_json_tags: true       # 是否生成 json 标签
+
 overrides:
     - db_type: "pg_catalog.int8"
       go_type:
         type: "int64"
         pointer: false
       nullable: true
+
     - column: accounts.created_at
       go_struct_tag: 'json:"-"'
     - column: entries.created_at

@@ -12,3 +12,13 @@ overrides:
         type: "int64"
         pointer: false
       nullable: true
+    - column: accounts.created_at
+      go_struct_tag: 'json:"-"'
+    - column: entries.created_at
+      go_struct_tag: 'json:"-"'
+    - column: transfers.created_at
+      go_struct_tag: 'json:"-"'
+    - column: users.created_at
+      go_struct_tag: 'json:"-"'
+    - column: users.password_changed_at
+      go_struct_tag: 'json:"-"'

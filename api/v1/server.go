@@ -42,6 +42,8 @@ func (server *Server) setupRouter() {
 		GroupV1.POST("/account", server.CreateAccount)
 
 		GroupV1.POST("/transfer", server.createTransfer)
+
+		GroupV1.POST("/user", server.CreateUser)
 	}
 
 	server.router = router

@@ -24,3 +24,5 @@ overrides:
       go_struct_tag: 'json:"-"'
     - column: users.password_changed_at
       go_struct_tag: 'json:"-"'
+    - column: users.password
+      go_struct_tag: 'json:"-"'

@@ -24,4 +24,6 @@ var (
 
 	NotUserCreateAccount = NewResultCode(4031, "只允许已注册用户创建账户")
 	CreateMultiAccount   = NewResultCode(4032, "用户只允许创建不同货币的账户各一个")
+	InvalidUsername      = NewResultCode(4033, "用户名已注册")
+	InvalidEmail         = NewResultCode(4034, "邮箱已注册")
 )

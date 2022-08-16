@@ -20,7 +20,10 @@ var (
 	InvalidCurrency     = NewResultCode(4003, "转账货币不一致")
 	InsufficientBalance = NewResultCode(4004, "账户余额不足")
 
-	AccountNotFound = NewResultCode(4041, "无此账户")
+	IncorrectPassword = NewResultCode(4011, "密码不正确")
+
+	AccountNotFound = NewResultCode(4041, "账户不存在")
+	UserNotFound    = NewResultCode(4042, "用户不存在")
 
 	NotUserCreateAccount = NewResultCode(4031, "只允许已注册用户创建账户")
 	CreateMultiAccount   = NewResultCode(4032, "用户只允许创建不同货币的账户各一个")

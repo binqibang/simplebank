@@ -1,6 +1,7 @@
 package v1
 
 import (
+	"database/sql"
 	"github.com/gin-gonic/gin"
 	"github.com/lib/pq"
 	"net/http"
@@ -51,4 +52,49 @@ func (server *Server) CreateUser(c *gin.Context) {
 		return
 	}
 	c.JSON(http.StatusOK, Success(user))
+}
+
+type loginUserRequest struct {
+	Username string `json:"username" binding:"required,alphanum"`
+	Password string `json:"password" binding:"required,min=6"`
+}
+
+type loginUserResponse struct {
+	AccessToken string  `json:"access_token"`
+	User        db.User `json:"user"`
+}
+
+func (server *Server) loginUser(c *gin.Context) {
+	var req loginUserRequest
+	if err := c.ShouldBindJSON(&req); err != nil {
+		c.JSON(http.StatusBadRequest, ErrorWithCode(common.InvalidRequestBody))
+		return
+	}
+	// Query the user.
+	user, err := server.store.GetUser(c, req.Username)
+	if err != nil {
+		if err == sql.ErrNoRows {
+			c.JSON(http.StatusNotFound, ErrorWithCode(common.UserNotFound))
+			return
+		}
+		c.JSON(http.StatusInternalServerError, Error(err))
+		return
+	}
+	// Check the password.
+	err = util.CheckPassword(req.Password, user.Password)
+	if err != nil {
+		c.JSON(http.StatusUnauthorized, ErrorWithCode(common.IncorrectPassword))
+		return
+	}
+	// Create access token.
+	accessToken, err := server.tokenMaker.CreateToken(req.Username, server.config.AccessTokenDuration)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, Error(err))
+		return
+	}
+	res := loginUserResponse{
+		AccessToken: accessToken,
+		User:        user,
+	}
+	c.JSON(http.StatusOK, Success(res))
 }

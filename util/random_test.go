@@ -19,3 +19,7 @@ func TestRandomCurrency(t *testing.T) {
 		t.Logf("Random Owner: %s\n", RandomCurrency())
 	}
 }
+
+func TestRandomString(t *testing.T) {
+	t.Log(RandomString(32))
+}

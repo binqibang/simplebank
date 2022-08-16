@@ -31,7 +31,7 @@ func RandomMoney() int64 {
 func RandomString(n int) string {
 	var sb strings.Builder
 	k := len(Alphabet)
-	for i := 0; i < n-1; i++ {
+	for i := 0; i < n; i++ {
 		ch := Alphabet[rand.Intn(k)]
 		sb.WriteByte(ch)
 	}
